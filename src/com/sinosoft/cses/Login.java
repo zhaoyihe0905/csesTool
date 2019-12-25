@@ -14,12 +14,12 @@ public class Login extends JFrame {
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //第二步：创建面板，面板用来划分区域
-        JPanel panel1 = new JPanel();
-        panel1.setBackground(Color.yellow);
-        //添加面板
-        this.add(panel1);
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.yellow);
         //此时我们已经有了可操作区域panel1了，我们要执行自定义方法进行组件添加
-        this.ComponentPanel1(panel1);
+        this.ComponentPanel(panel);
+        //添加面板
+        this.add(panel);
         this.setVisible(true);
     }
 
@@ -40,17 +40,15 @@ public class Login extends JFrame {
      * 添加组件到面板
      * @param panel
      */
-    void ComponentPanel1(JPanel panel){
+    void ComponentPanel(JPanel panel){
         //布局
         //通知框
         JTextArea textArea = new JTextArea(100,100);
         textArea.setBounds(18,25,300,60);
         textArea.setDisabledTextColor(Color.red);
-        //textArea.setBackground(Color.blue);
         new Message().loginMessage(textArea);
         textArea.setEnabled(false);
         //设置透明
-        //textArea.setOpaque(false);
         panel.add(textArea);
 
         panel.setLayout(null);
@@ -74,14 +72,38 @@ public class Login extends JFrame {
         //登录按钮
         JButton login = new JButton("登录");
         login.setBounds(70,170,100,25);
+        login.doClick();
+        login.addActionListener(Event->this.verifyLogin(userText,passText));
         panel.add(login);
         //联系管理员按钮
         JButton admin = new JButton("联系管理员");
         admin.setBounds(180,170,100,25);
         //绑定事件
         admin.doClick();
-        admin.addActionListener(event-> JOptionPane.showMessageDialog(null,"QQ：939694105"));
+        admin.addActionListener(Event-> JOptionPane.showMessageDialog(null,"QQ：939694105"));
         panel.add(admin);
 
+    }
+
+    /**
+     * 校验用户名密码是否正确
+     */
+    void verifyLogin(JTextField username,JTextField password){
+        //获取输入的用户名和密码
+        String usernameText = username.getText();
+        String passwordText = password.getText();
+
+        if("".equals(usernameText)||usernameText==null){
+            JOptionPane.showMessageDialog(null,"用户名不能为空");
+            return;
+    }
+        if("".equals(passwordText)||passwordText==null){
+            JOptionPane.showMessageDialog(null,"密码不能为空");
+            return;
+        }
+        //关闭登录界面
+        this.dispose();
+        //验证通过，打开系统界面
+        new MoniLiucheng();
     }
 }
